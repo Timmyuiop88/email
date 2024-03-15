@@ -1,94 +1,88 @@
+"use client";
 import Image from "next/image";
-import styles from "./page.module.css";
+import axios from "axios";
+import { useState, useEffect } from "react";
+import { FaRegUser } from "react-icons/fa";
+import { FaArrowRight } from "react-icons/fa6";
+import { Rings } from 'react-loader-spinner'
+import Link from "next/link";
 
 export default function Home() {
+  const [isLoggedIn, setLoggedIn] = useState(true);
+  const [userId, setUserId] = useState("EM142");
+  const [user, setUser] = useState(null);
+  const [messageCount, setMessagecount] = useState(null);
+
+  useEffect(() => {
+    async function fetchUser() {
+      try {
+        const response = await axios.get("/api/user", {
+          params: {
+            uin: userId,
+          },
+        });
+
+        setUser(response.data);
+      } catch (error) {
+        console.error("Error fetching user:", error);
+      }
+    }
+
+    fetchUser();
+  }, [userId]);
+
+  useEffect(() => {
+    async function fetchMessageCount() {
+      try {
+        const response = await axios.get("/api/getMessageCount", {
+          params: {
+            receiverId: userId,
+          },
+        });
+
+        setMessagecount(response.data);
+      } catch (error) {
+        console.error("Error fetching Message Count:", error);
+      }
+    }
+
+    fetchMessageCount();
+  }, [userId]);
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.js</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
+    <main>
+      <div className="welcome">
+        {user && messageCount ? (
+          <div className="login">
+            <dis className=" dialog-title">
+              <h2>Hello {user.first_name}</h2>
+            </dis>
+            <dis className="dialog">
+              <h4>
+                You have {messageCount.unread} unread messages out of{" "}
+                {messageCount.total} total
+              </h4>
+            </dis>
+            <dis className="dialog-hidden">
+              <Link className="link" href={`/inbox?userId=${userId}`}>
+         
+              <button className="btn-primary">
+                View Messages <FaArrowRight />
+              </button>
+              </Link>
+            </dis>
+          </div>
+        ) : (
+          <Rings
+          visible={true}
+          height="80"
+          width="80"
+          color="#3561a4"
+          ariaLabel="rings-loading"
+          wrapperStyle={{}}
+          wrapperClass=""
+          />
+        )}
       </div>
     </main>
   );
