@@ -255,14 +255,14 @@ background: #cdd5e1c6;
 .view-text{
   height: 'auto';
   width: 100%;
+
 }
 .view-text p {
   padding-left: 70px;
   padding-right: 20px;
   padding-bottom: 20px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+word-wrap: break-word;
+  
   font-size: 12px;
   font-weight: 300;
 }
