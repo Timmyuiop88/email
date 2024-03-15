@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { Rings } from 'react-loader-spinner'
+import { Rings } from "react-loader-spinner";
 import axios from "axios";
 import styles from "../page.module.css";
 import { useState, useEffect } from "react";
@@ -70,41 +70,50 @@ export default function Inbox() {
           />
           <div className="body">
             <div className={active ? "content active" : "content"}>
-              {messages.map((message, index) => (
-                            <Link className="link"  href={`/message?messageId=${message.messageId}&userId=${userId} `}>
-                <div  className={message.isRead ? 'inbox' : 'inbox unread'} key={index}>
-                  <div className="inbox-title">
-                    <div className="inbox-avatar">
-                      <FaRegUser />
+              {messages
+                .slice()
+                .sort((a, b) => b.id - a.id)
+                .map((message, index) => (
+                  <Link
+                    className="link"
+                    href={`/message?messageId=${message.messageId}&userId=${userId} `}
+                  >
+                    <div
+                      className={message.isRead ? "inbox" : "inbox unread"}
+                      key={index}
+                    >
+                      <div className="inbox-title">
+                        <div className="inbox-avatar">
+                          <FaRegUser />
+                        </div>
+                        <div className="inbox-subject">
+                          <h3>
+                            {message.user.first_name} {message.user.last_name}{" "}
+                          </h3>
+                          <h5>{message.subject}</h5>
+                        </div>
+                      </div>
+                      <div className="inbox-text">
+                        <p>{message.content}</p>
+                      </div>
                     </div>
-                    <div className="inbox-subject">
-                      <h3>{message.user.first_name} {message.user.last_name} </h3>
-                      <h5>{message.subject}</h5>
-                    </div>
-                  </div>
-                  <div className="inbox-text">
-                  <p>{message.content}</p>
-                  </div>
-                
-                </div>
-                </Link>
-              ))}
+                  </Link>
+                ))}
 
               <span className="text"></span>
             </div>
           </div>
         </div>
-      
       ) : (
         <Rings
-  visible={true}
-  height="80"
-  width="80"
-  color="#3561a4"
-  ariaLabel="rings-loading"
-  wrapperStyle={{}}
-  wrapperClass=""
-  />
+          visible={true}
+          height="80"
+          width="80"
+          color="#3561a4"
+          ariaLabel="rings-loading"
+          wrapperStyle={{}}
+          wrapperClass=""
+        />
       )}
     </main>
   );

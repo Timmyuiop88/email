@@ -19,10 +19,14 @@ export async function GET(req, res) {
                 include: {
                     user: true 
                 },
+                
                 where: {
                     receiverId: receiverId,
                   
-                }
+                },
+                orderBy: {
+                    id: 'desc'
+                  },
             });
         
 

@@ -113,6 +113,8 @@ background: #cdd5e1c6;
   border-radius: 5px;
   margin: 0;
   border: 1px solid #999;
+  background: #3561a4;
+  color: white;
 }
 .nav {
   height: 100vh;
@@ -150,7 +152,12 @@ background: #cdd5e1c6;
 .logo {
   height: 40px;
   width: 100px;
-  background: #000;
+  background: #3561a4;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
 }
 .nav-item {
   height: 50px;

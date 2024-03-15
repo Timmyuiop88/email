@@ -52,7 +52,7 @@ export default function NavBar({ active, toggleActive, unread, read, total, user
                 <button className="btn" onClick={toggleActive}>
                   <IoMdClose />
                 </button>
-                <div className="logo"></div>
+                <div className="logo">LOGO</div>
               </div>
 
               <div className="nav-item">
